@@ -6,5 +6,8 @@ const which = async (bin: string) => await new Promise((resolve, reject) => exec
 }))
 
 export default async () => {
-    return `${await which('ffmpeg')} ${await which('ffprobe')}`
+    const diagnostics = []
+    diagnostics.push(`${await which('ffmpeg')} ${await which('ffprobe')}`)
+
+    return diagnostics.reduce((acc, curr) => `${acc}\n${curr}`)
 }

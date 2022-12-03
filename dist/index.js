@@ -13,10 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const streamRickRoll_1 = __importDefault(require("./streamRickRoll"));
+const promises_1 = require("node:fs/promises");
 const app = (0, express_1.default)();
 app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const rickRoll = yield (0, streamRickRoll_1.default)();
-    res.send(rickRoll);
+    // const rickRoll = await streamRickRoll();
+    const index = yield (0, promises_1.readFile)('public/index.html', { encoding: 'utf-8' });
+    res.send(index);
 }));
 app.listen(8080);
