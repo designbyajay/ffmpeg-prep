@@ -5,21 +5,17 @@
         let rickRollResponse = null
 
         const getRickRoll = async () => {
-            const response = await fetch('/example', { method: 'GET' })
-
-            const videoUrl = await response.text();
-
             const v = document.getElementById('stream')
-
-            v.src = videoUrl
-
-            console.log(v)
-
+            v.src = '/example'
+            v.muted = true
+            v.controls = true
+            // v.play();
         }
     </script>
 </head>
 
 <body>
     <button onclick="getRickRoll()">hibob</button>
-    <video id="stream"></video>
+    <video id="stream" type="video/mp4">
+    </video>
 </body>

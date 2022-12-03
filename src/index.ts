@@ -1,5 +1,6 @@
 import express from 'express'
-import {readFile} from 'node:fs/promises'
+import {readFile, stat} from 'node:fs/promises'
+import { createReadStream } from 'node:fs'
 import streamRickRoll from './streamRickRoll'
 
 const app = express();
@@ -10,12 +11,35 @@ app.get('/', async (req, res) => {
 })
 
 app.get('/example', async (req, res) => {
-    const rickRoll = await streamRickRoll();
-    res.send(rickRoll)
-})
+    // const rickRoll = await streamRickRoll();
+    // res.send(rickRoll)
+    const range = req.headers.range
+    if(!range) res.status(400).send("requires range header")
 
-app.get('/sample', async(req, res) => {
-    res.sendFile(`${__dirname}/public/sample.mp4`)
+    const videoPath = `${__dirname}/public/sample.mp4`
+    const videoSize = (await stat(videoPath)).size;
+
+    const [start, end] = (range as string).split("=")[1].split("-").map(s => parseInt(s))
+    // const end = Math.min(start + 1000000, videoSize - 1)
+
+
+    res.status(206).set({
+        'Content-Type': 'video/mp4',
+        'Content-Length': `${end - start + 1}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Range': `bytes ${start}-${end}/${videoSize}`
+    })
+
+    const videoStream = createReadStream(videoPath, {start, end})
+    // console.log(videoStream)
+
+    for await (const chunk of videoStream){
+        console.log(chunk)
+        res.write(chunk)
+        
+    }
+
+    res.end()
 })
 
 app.listen(8080)

@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --project tsconfig.json && cp -r ./public ./dist/public",
+    "build": "tsc --project tsconfig.json && cp -r ./public ./dist",
     "serve": "pnpm build && node dist/index.js",
     "watch": "nodemon --exec 'pnpm serve'"
   },
