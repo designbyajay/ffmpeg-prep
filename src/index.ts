@@ -10,9 +10,13 @@ app.get('/', async (req, res) => {
     res.send(index)
 })
 
+app.get('/makestream', async(req, res) => {
+    await streamRickRoll();
+    res.status(200)
+    res.end();
+})
+
 app.get('/example', async (req, res) => {
-    // const rickRoll = await streamRickRoll();
-    // res.send(rickRoll)
     const range = req.headers.range
     if(!range) res.status(400).send("requires range header")
 
@@ -34,9 +38,7 @@ app.get('/example', async (req, res) => {
     // console.log(videoStream)
 
     for await (const chunk of videoStream){
-        console.log(chunk)
         res.write(chunk)
-        
     }
 
     res.end()

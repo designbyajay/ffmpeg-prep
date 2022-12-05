@@ -5,6 +5,19 @@
         let rickRollResponse = null
 
         const getRickRoll = async () => {
+            const { body } = await fetch('/makestream')
+            const reader = body.getReader()
+
+            const getChunk = async function* () {
+                const { value, done } = await reader.read()
+                if (done) return;
+                yield value;
+            }
+
+            for await (const chunk of getChunk()) {
+                console.log(chunk.toString())
+            }
+
             const v = document.getElementById('stream')
             v.src = '/example'
             v.muted = true
