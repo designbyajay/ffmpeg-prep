@@ -1,7 +1,25 @@
 <!DOCTYPE html>
 
-<head></head>
+<head>
+    <script>
+        let rickRollResponse = null
+
+        const getRickRoll = async () => {
+            const response = await fetch('/example', { method: 'GET' })
+
+            const videoUrl = await response.text();
+
+            const v = document.getElementById('stream')
+
+            v.src = videoUrl
+
+            console.log(v)
+
+        }
+    </script>
+</head>
 
 <body>
-    <button>hibob</button>
+    <button onclick="getRickRoll()">hibob</button>
+    <video id="stream"></video>
 </body>

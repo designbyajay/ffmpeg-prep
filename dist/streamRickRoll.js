@@ -18,7 +18,8 @@ const which = (bin) => __awaiter(void 0, void 0, void 0, function* () {
     }));
 });
 exports.default = () => __awaiter(void 0, void 0, void 0, function* () {
-    const diagnostics = [];
-    diagnostics.push(`${yield which('ffmpeg')} ${yield which('ffprobe')}`);
-    return diagnostics.reduce((acc, curr) => `${acc}\n${curr}`);
+    // const diagnostics = []
+    // diagnostics.push(`${await which('ffmpeg')} ${await which('ffprobe')}`)
+    // return diagnostics.reduce((acc, curr) => `${acc}\n${curr}`)
+    return '/sample';
 });
