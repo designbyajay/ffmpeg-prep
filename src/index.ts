@@ -1,9 +1,12 @@
 import express from 'express'
+import compression from 'compression'
 import {readFile, stat} from 'node:fs/promises'
 import { createReadStream } from 'node:fs'
-import streamRickRoll from './streamRickRoll'
+import makeStream from './makeStream'
 
 const app = express();
+
+app.use(compression());
 
 app.get('/', async (req, res) => {
     const index = await readFile('public/index.html', {encoding: 'utf-8'})
@@ -11,9 +14,11 @@ app.get('/', async (req, res) => {
 })
 
 app.get('/makestream', async(req, res) => {
-    await streamRickRoll();
-    res.status(200)
-    res.end();
+    const path = await makeStream();
+
+    console.log(path)
+    res.send(path as string)
+    // res.end();
 })
 
 app.get('/example', async (req, res) => {
@@ -44,4 +49,12 @@ app.get('/example', async (req, res) => {
     res.end()
 })
 
+app.get('/examplestream', async(req, res) => {
+    res.sendFile(`${__dirname}/public/sample/master.m3u8`)
+})
+
+app.get('/*', async(req,res) => {
+    
+    res.sendFile(`${__dirname}/public/sample/${req.originalUrl}`)
+})
 app.listen(8080)

@@ -4,31 +4,20 @@
     <script>
         let rickRollResponse = null
 
-        const getRickRoll = async () => {
-            const { body } = await fetch('/makestream')
-            const reader = body.getReader()
-
-            const getChunk = async function* () {
-                const { value, done } = await reader.read()
-                if (done) return;
-                yield value;
-            }
-
-            for await (const chunk of getChunk()) {
-                console.log(chunk.toString())
-            }
+        const makeStream = async () => {
+            await fetch('/makestream')
 
             const v = document.getElementById('stream')
-            v.src = '/example'
-            v.muted = true
+            v.src = '/examplestream'
+            v.muted = false
             v.controls = true
-            // v.play();
+            v.play();
         }
     </script>
 </head>
 
 <body>
-    <button onclick="getRickRoll()">hibob</button>
+    <button onclick="makeStream()">play stream</button>
     <video id="stream" type="video/mp4">
     </video>
 </body>
